@@ -35,7 +35,7 @@ func _ready() -> void:
 	box.add_child(title)
 
 	var sub := Label.new()
-	sub.text = "protótipo v0.1"
+	sub.text = "protótipo v0.2"
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.add_theme_color_override("font_color", Color(0.6, 0.6, 0.7))
 	box.add_child(sub)
@@ -99,6 +99,7 @@ func _make_button(text: String, cb: Callable) -> Button:
 	b.add_theme_stylebox_override("pressed", _sb(Color(0.34, 0.24, 0.3)))
 	b.add_theme_stylebox_override("focus", _sb(Color(0.2, 0.18, 0.3)))
 	b.add_theme_color_override("font_color", Color(0.92, 0.92, 0.97))
+	b.pressed.connect(func(): Sfx.play("click", -4.0))
 	b.pressed.connect(cb)
 	return b
 

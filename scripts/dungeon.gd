@@ -50,7 +50,7 @@ func generate(room_count: int) -> void:
 
 
 func _random_size() -> Vector2i:
-	return Vector2i(rng.randi_range(12, 26), rng.randi_range(10, 18))
+	return Vector2i(rng.randi_range(10, 18), rng.randi_range(8, 13))
 
 
 func _add_room(rect: Rect2i, style: int, cells: Array) -> int:
@@ -289,6 +289,11 @@ func has_los(a: Vector2, b: Vector2) -> bool:
 		if is_solid_pos(p):
 			return false
 	return true
+
+
+func room_center(i: int) -> Vector2:
+	var rect: Rect2i = rooms[i].rect
+	return (Vector2(rect.position) + Vector2(rect.size) * 0.5) * TILE
 
 
 func center_open_cell(i: int) -> Vector2i:
