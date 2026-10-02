@@ -1,6 +1,46 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
+[ext_resource type="Script" path="res://scripts/dungeon.gd" id="2_dungeon"]
+[ext_resource type="Resource" path="res://data/dungeon_settings.tres" id="3_settings"]
+[ext_resource type="Script" path="res://scripts/fx.gd" id="4_fx"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="5_player"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/monster.tscn" id="7_monster"]
+[ext_resource type="Script" path="res://resources/monster_def.gd" id="8_monscr"]
+[ext_resource type="Resource" path="res://data/monsters/slime.tres" id="9_slime"]
+[ext_resource type="Resource" path="res://data/monsters/bat.tres" id="10_bat"]
+[ext_resource type="Resource" path="res://data/monsters/ogre.tres" id="11_ogre"]
+[ext_resource type="Resource" path="res://data/monsters/skeleton.tres" id="12_skeleton"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_game")
+monster_scene = ExtResource("7_monster")
+monster_defs = Array[ExtResource("8_monscr")]([ExtResource("9_slime"), ExtResource("10_bat"), ExtResource("11_ogre"), ExtResource("12_skeleton")])
+
+[node name="Dungeon" type="Node2D" parent="."]
+script = ExtResource("2_dungeon")
+settings = ExtResource("3_settings")
+
+[node name="Fx" type="Node2D" parent="."]
+script = ExtResource("4_fx")
+
+[node name="Monsters" type="Node2D" parent="."]
+
+[node name="Player" type="Node2D" parent="."]
+script = ExtResource("5_player")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Hud" type="Control" parent="HudLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_hud")

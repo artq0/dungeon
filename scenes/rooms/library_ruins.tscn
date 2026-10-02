@@ -1,0 +1,158 @@
+[gd_scene format=3 uid="uid://b3mwtwmywa6n5"]
+
+[ext_resource type="Script" uid="uid://ouyowkuo4svp" path="res://scripts/rooms/room_layout.gd" id="1_layout"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/crate.tscn" id="2_crate"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/books.tscn" id="3_books"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/shelf.tscn" id="4_shelf"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/vase.tscn" id="5_vase"]
+
+[node name="BibliotecaEmRuinas" type="Control" unique_id=1779205266]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 10.0
+offset_right = 453.0
+offset_bottom = 330.0
+script = ExtResource("1_layout")
+id = &"library_ruins"
+display_name = "Biblioteca em Ruínas"
+tag = "library"
+tone = 0.06
+
+[node name="Buracos" type="Node2D" parent="." unique_id=1504118432]
+
+[node name="Tapetes" type="Node2D" parent="." unique_id=1287004457]
+
+[node name="Objetos" type="Node2D" parent="." unique_id=2046759973]
+
+[node name="Estante1" parent="Objetos" unique_id=1524081859 instance=ExtResource("4_shelf")]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Estante2" parent="Objetos" unique_id=2133963368 instance=ExtResource("4_shelf")]
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 96.0
+offset_bottom = 64.0
+
+[node name="Estante3" parent="Objetos" unique_id=1568293860 instance=ExtResource("4_shelf")]
+offset_left = 96.0
+offset_top = 32.0
+offset_right = 128.0
+offset_bottom = 64.0
+
+[node name="Livros1" parent="Objetos" unique_id=480009476 instance=ExtResource("3_books")]
+offset_left = 224.0
+offset_top = 96.0
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="Estante4" parent="Objetos" unique_id=1440957920 instance=ExtResource("4_shelf")]
+offset_left = 320.0
+offset_top = 32.0
+offset_right = 352.0
+offset_bottom = 64.0
+
+[node name="Estante5" parent="Objetos" unique_id=1737107349 instance=ExtResource("4_shelf")]
+offset_left = 352.0
+offset_top = 32.0
+offset_right = 384.0
+offset_bottom = 64.0
+
+[node name="Livros2" parent="Objetos" unique_id=1535445504 instance=ExtResource("3_books")]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 96.0
+offset_bottom = 96.0
+
+[node name="Estante6" parent="Objetos" unique_id=1025465508 instance=ExtResource("4_shelf")]
+offset_left = 128.0
+offset_top = 96.0
+offset_right = 160.0
+offset_bottom = 128.0
+
+[node name="Vaso1" parent="Objetos" unique_id=529504093 instance=ExtResource("5_vase")]
+offset_left = 288.0
+offset_top = 96.0
+offset_right = 320.0
+offset_bottom = 128.0
+
+[node name="Livros3" parent="Objetos" unique_id=1284166274 instance=ExtResource("3_books")]
+offset_left = 352.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 96.0
+
+[node name="Livros4" parent="Objetos" unique_id=1448248730 instance=ExtResource("3_books")]
+offset_left = 96.0
+offset_top = 160.0
+offset_right = 128.0
+offset_bottom = 192.0
+
+[node name="Estante7" parent="Objetos" unique_id=1924973782 instance=ExtResource("4_shelf")]
+offset_left = 192.0
+offset_top = 160.0
+offset_right = 224.0
+offset_bottom = 192.0
+
+[node name="Estante8" parent="Objetos" unique_id=897146880 instance=ExtResource("4_shelf")]
+offset_left = 224.0
+offset_top = 160.0
+offset_right = 256.0
+offset_bottom = 192.0
+
+[node name="Livros5" parent="Objetos" unique_id=744267835 instance=ExtResource("3_books")]
+offset_left = 320.0
+offset_top = 192.0
+offset_right = 352.0
+offset_bottom = 224.0
+
+[node name="Estante9" parent="Objetos" unique_id=699269173 instance=ExtResource("4_shelf")]
+offset_left = 32.0
+offset_top = 224.0
+offset_right = 64.0
+offset_bottom = 256.0
+
+[node name="Estante10" parent="Objetos" unique_id=729585455 instance=ExtResource("4_shelf")]
+offset_left = 64.0
+offset_top = 224.0
+offset_right = 96.0
+offset_bottom = 256.0
+
+[node name="Livros6" parent="Objetos" unique_id=575675928 instance=ExtResource("3_books")]
+offset_left = 192.0
+offset_top = 192.0
+offset_right = 224.0
+offset_bottom = 224.0
+
+[node name="Estante11" parent="Objetos" unique_id=358728649 instance=ExtResource("4_shelf")]
+offset_left = 320.0
+offset_top = 224.0
+offset_right = 352.0
+offset_bottom = 256.0
+
+[node name="Estante12" parent="Objetos" unique_id=1869519843 instance=ExtResource("4_shelf")]
+offset_left = 352.0
+offset_top = 224.0
+offset_right = 384.0
+offset_bottom = 256.0
+
+[node name="Estante13" parent="Objetos" unique_id=1699777279 instance=ExtResource("4_shelf")]
+offset_left = 384.0
+offset_top = 224.0
+offset_right = 416.0
+offset_bottom = 256.0
+
+[node name="Caixa1" parent="Objetos" unique_id=583926983 instance=ExtResource("2_crate")]
+offset_left = 64.0
+offset_top = 256.0
+offset_right = 96.0
+offset_bottom = 288.0
+
+[node name="Caixa2" parent="Objetos" unique_id=986297412 instance=ExtResource("2_crate")]
+offset_left = 288.0
+offset_top = 224.0
+offset_right = 320.0
+offset_bottom = 256.0

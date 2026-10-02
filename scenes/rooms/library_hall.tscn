@@ -1,0 +1,300 @@
+[gd_scene format=3 uid="uid://bodgyurh87mpu"]
+
+[ext_resource type="Script" uid="uid://ouyowkuo4svp" path="res://scripts/rooms/room_layout.gd" id="1_layout"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/books.tscn" id="2_books"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/shelf.tscn" id="3_shelf"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/table.tscn" id="4_table"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/rug.tscn" id="5_rug"]
+
+[node name="SalaoDasEstantes" type="Control" unique_id=1107238]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 352.0
+script = ExtResource("1_layout")
+id = &"library_hall"
+display_name = "Salão das Estantes"
+tag = "library"
+tone = 0.1
+
+[node name="Buracos" type="Node2D" parent="." unique_id=1397143877]
+
+[node name="Tapetes" type="Node2D" parent="." unique_id=1743877953]
+
+[node name="Tapete1" parent="Tapetes" unique_id=1925313705 instance=ExtResource("5_rug")]
+offset_left = 64.0
+offset_top = 256.0
+offset_right = 224.0
+offset_bottom = 352.0
+
+[node name="Tapete2" parent="Tapetes" unique_id=208762989 instance=ExtResource("5_rug")]
+offset_left = 288.0
+offset_top = 256.0
+offset_right = 448.0
+offset_bottom = 352.0
+
+[node name="Objetos" type="Node2D" parent="." unique_id=914863776]
+
+[node name="Estante1" parent="Objetos" unique_id=701800840 instance=ExtResource("3_shelf")]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Estante2" parent="Objetos" unique_id=1455603034 instance=ExtResource("3_shelf")]
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 96.0
+offset_bottom = 64.0
+
+[node name="Estante3" parent="Objetos" unique_id=1984323949 instance=ExtResource("3_shelf")]
+offset_left = 96.0
+offset_top = 32.0
+offset_right = 128.0
+offset_bottom = 64.0
+
+[node name="Estante4" parent="Objetos" unique_id=1596080963 instance=ExtResource("3_shelf")]
+offset_left = 128.0
+offset_top = 32.0
+offset_right = 160.0
+offset_bottom = 64.0
+
+[node name="Estante5" parent="Objetos" unique_id=886203283 instance=ExtResource("3_shelf")]
+offset_left = 160.0
+offset_top = 32.0
+offset_right = 192.0
+offset_bottom = 64.0
+
+[node name="Estante6" parent="Objetos" unique_id=1452960111 instance=ExtResource("3_shelf")]
+offset_left = 192.0
+offset_top = 32.0
+offset_right = 224.0
+offset_bottom = 64.0
+
+[node name="Estante7" parent="Objetos" unique_id=411973129 instance=ExtResource("3_shelf")]
+offset_left = 288.0
+offset_top = 32.0
+offset_right = 320.0
+offset_bottom = 64.0
+
+[node name="Estante8" parent="Objetos" unique_id=1407168931 instance=ExtResource("3_shelf")]
+offset_left = 320.0
+offset_top = 32.0
+offset_right = 352.0
+offset_bottom = 64.0
+
+[node name="Estante9" parent="Objetos" unique_id=1237703490 instance=ExtResource("3_shelf")]
+offset_left = 352.0
+offset_top = 32.0
+offset_right = 384.0
+offset_bottom = 64.0
+
+[node name="Estante10" parent="Objetos" unique_id=2094023937 instance=ExtResource("3_shelf")]
+offset_left = 384.0
+offset_top = 32.0
+offset_right = 416.0
+offset_bottom = 64.0
+
+[node name="Estante11" parent="Objetos" unique_id=426067457 instance=ExtResource("3_shelf")]
+offset_left = 416.0
+offset_top = 32.0
+offset_right = 448.0
+offset_bottom = 64.0
+
+[node name="Estante12" parent="Objetos" unique_id=1501547749 instance=ExtResource("3_shelf")]
+offset_left = 448.0
+offset_top = 32.0
+offset_right = 480.0
+offset_bottom = 64.0
+
+[node name="Livros1" parent="Objetos" unique_id=303853146 instance=ExtResource("2_books")]
+offset_left = 96.0
+offset_top = 192.0
+offset_right = 128.0
+offset_bottom = 224.0
+
+[node name="Livros2" parent="Objetos" unique_id=1576981825 instance=ExtResource("2_books")]
+offset_left = 384.0
+offset_top = 96.0
+offset_right = 416.0
+offset_bottom = 128.0
+
+[node name="Estante13" parent="Objetos" unique_id=942836320 instance=ExtResource("3_shelf")]
+offset_left = 32.0
+offset_top = 128.0
+offset_right = 64.0
+offset_bottom = 160.0
+
+[node name="Estante14" parent="Objetos" unique_id=1927633975 instance=ExtResource("3_shelf")]
+offset_left = 64.0
+offset_top = 128.0
+offset_right = 96.0
+offset_bottom = 160.0
+
+[node name="Estante15" parent="Objetos" unique_id=1886476400 instance=ExtResource("3_shelf")]
+offset_left = 96.0
+offset_top = 128.0
+offset_right = 128.0
+offset_bottom = 160.0
+
+[node name="Estante16" parent="Objetos" unique_id=1333498807 instance=ExtResource("3_shelf")]
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 160.0
+offset_bottom = 160.0
+
+[node name="Estante17" parent="Objetos" unique_id=1253048461 instance=ExtResource("3_shelf")]
+offset_left = 160.0
+offset_top = 128.0
+offset_right = 192.0
+offset_bottom = 160.0
+
+[node name="Estante18" parent="Objetos" unique_id=750789901 instance=ExtResource("3_shelf")]
+offset_left = 192.0
+offset_top = 128.0
+offset_right = 224.0
+offset_bottom = 160.0
+
+[node name="Estante19" parent="Objetos" unique_id=1368166372 instance=ExtResource("3_shelf")]
+offset_left = 288.0
+offset_top = 128.0
+offset_right = 320.0
+offset_bottom = 160.0
+
+[node name="Estante20" parent="Objetos" unique_id=916808110 instance=ExtResource("3_shelf")]
+offset_left = 320.0
+offset_top = 128.0
+offset_right = 352.0
+offset_bottom = 160.0
+
+[node name="Estante21" parent="Objetos" unique_id=1843846361 instance=ExtResource("3_shelf")]
+offset_left = 352.0
+offset_top = 128.0
+offset_right = 384.0
+offset_bottom = 160.0
+
+[node name="Estante22" parent="Objetos" unique_id=522368777 instance=ExtResource("3_shelf")]
+offset_left = 384.0
+offset_top = 128.0
+offset_right = 416.0
+offset_bottom = 160.0
+
+[node name="Estante23" parent="Objetos" unique_id=1562819209 instance=ExtResource("3_shelf")]
+offset_left = 416.0
+offset_top = 128.0
+offset_right = 448.0
+offset_bottom = 160.0
+
+[node name="Estante24" parent="Objetos" unique_id=793987439 instance=ExtResource("3_shelf")]
+offset_left = 448.0
+offset_top = 128.0
+offset_right = 480.0
+offset_bottom = 160.0
+
+[node name="Estante25" parent="Objetos" unique_id=1557580004 instance=ExtResource("3_shelf")]
+offset_left = 32.0
+offset_top = 224.0
+offset_right = 64.0
+offset_bottom = 256.0
+
+[node name="Estante26" parent="Objetos" unique_id=258825159 instance=ExtResource("3_shelf")]
+offset_left = 64.0
+offset_top = 224.0
+offset_right = 96.0
+offset_bottom = 256.0
+
+[node name="Estante27" parent="Objetos" unique_id=321659906 instance=ExtResource("3_shelf")]
+offset_left = 96.0
+offset_top = 224.0
+offset_right = 128.0
+offset_bottom = 256.0
+
+[node name="Estante28" parent="Objetos" unique_id=728047618 instance=ExtResource("3_shelf")]
+offset_left = 128.0
+offset_top = 224.0
+offset_right = 160.0
+offset_bottom = 256.0
+
+[node name="Estante29" parent="Objetos" unique_id=183372036 instance=ExtResource("3_shelf")]
+offset_left = 160.0
+offset_top = 224.0
+offset_right = 192.0
+offset_bottom = 256.0
+
+[node name="Estante30" parent="Objetos" unique_id=780247733 instance=ExtResource("3_shelf")]
+offset_left = 192.0
+offset_top = 224.0
+offset_right = 224.0
+offset_bottom = 256.0
+
+[node name="Estante31" parent="Objetos" unique_id=448432284 instance=ExtResource("3_shelf")]
+offset_left = 288.0
+offset_top = 224.0
+offset_right = 320.0
+offset_bottom = 256.0
+
+[node name="Estante32" parent="Objetos" unique_id=396847056 instance=ExtResource("3_shelf")]
+offset_left = 320.0
+offset_top = 224.0
+offset_right = 352.0
+offset_bottom = 256.0
+
+[node name="Estante33" parent="Objetos" unique_id=1995108362 instance=ExtResource("3_shelf")]
+offset_left = 352.0
+offset_top = 224.0
+offset_right = 384.0
+offset_bottom = 256.0
+
+[node name="Estante34" parent="Objetos" unique_id=1619727975 instance=ExtResource("3_shelf")]
+offset_left = 384.0
+offset_top = 224.0
+offset_right = 416.0
+offset_bottom = 256.0
+
+[node name="Estante35" parent="Objetos" unique_id=1518553003 instance=ExtResource("3_shelf")]
+offset_left = 416.0
+offset_top = 224.0
+offset_right = 448.0
+offset_bottom = 256.0
+
+[node name="Estante36" parent="Objetos" unique_id=2113279019 instance=ExtResource("3_shelf")]
+offset_left = 448.0
+offset_top = 224.0
+offset_right = 480.0
+offset_bottom = 256.0
+
+[node name="Mesa1" parent="Objetos" unique_id=206041799 instance=ExtResource("4_table")]
+offset_left = 96.0
+offset_top = 288.0
+offset_right = 128.0
+offset_bottom = 320.0
+
+[node name="Mesa2" parent="Objetos" unique_id=1514870323 instance=ExtResource("4_table")]
+offset_left = 128.0
+offset_top = 288.0
+offset_right = 160.0
+offset_bottom = 320.0
+
+[node name="Mesa3" parent="Objetos" unique_id=200514985 instance=ExtResource("4_table")]
+offset_left = 352.0
+offset_top = 288.0
+offset_right = 384.0
+offset_bottom = 320.0
+
+[node name="Mesa4" parent="Objetos" unique_id=1143307966 instance=ExtResource("4_table")]
+offset_left = 384.0
+offset_top = 288.0
+offset_right = 416.0
+offset_bottom = 320.0
+
+[node name="Table" parent="Objetos" unique_id=1463676667 instance=ExtResource("4_table")]
+offset_left = 160.0
+offset_top = 288.0
+offset_right = 192.0
+offset_bottom = 320.0
+
+[node name="Table2" parent="Objetos" unique_id=1303755641 instance=ExtResource("4_table")]
+offset_left = 320.0
+offset_top = 288.0
+offset_right = 352.0
+offset_bottom = 320.0

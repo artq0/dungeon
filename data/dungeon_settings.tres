@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="DungeonSettings" load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://resources/dungeon_settings.gd" id="1_set"]
+[ext_resource type="Script" path="res://resources/object_def.gd" id="2_objscr"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/library_hall.tscn" id="r0_library_hall"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/library_reading.tscn" id="r1_library_reading"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/library_archive.tscn" id="r2_library_archive"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/library_ruins.tscn" id="r3_library_ruins"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/corridor.tscn" id="r4_corridor"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/storeroom.tscn" id="r5_storeroom"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/pillar_hall.tscn" id="r6_pillar_hall"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/dining.tscn" id="r7_dining"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/corridor_l.tscn" id="r8_corridor_l"]
+[ext_resource type="Resource" path="res://data/objects/shelf.tres" id="o0_shelf"]
+[ext_resource type="Resource" path="res://data/objects/pillar.tres" id="o1_pillar"]
+[ext_resource type="Resource" path="res://data/objects/table.tres" id="o2_table"]
+[ext_resource type="Resource" path="res://data/objects/barrel.tres" id="o3_barrel"]
+[ext_resource type="Resource" path="res://data/objects/crate.tres" id="o4_crate"]
+[ext_resource type="Resource" path="res://data/objects/vase.tres" id="o5_vase"]
+[ext_resource type="Resource" path="res://data/objects/books.tres" id="o6_books"]
+
+[resource]
+script = ExtResource("1_set")
+room_count_min = 6
+room_count_max = 9
+room_width = Vector2i(10, 18)
+room_height = Vector2i(8, 13)
+template_chance = 0.5
+force_libraries = true
+random_styles = 63
+door_hp = 8.0
+fog_color = Color(0.17, 0.19, 0.26, 1)
+fog_unseen = 0.9
+fog_peek = 0.7
+fog_visited = 0.5
+fog_shade = 0.55
+tint_hue = Vector2(0.055, 0.095)
+tint_saturation = Vector2(0.42, 0.58)
+tint_value = Vector2(0.34, 0.44)
+room_scenes = Array[PackedScene]([ExtResource("r0_library_hall"), ExtResource("r1_library_reading"), ExtResource("r2_library_archive"), ExtResource("r3_library_ruins"), ExtResource("r4_corridor"), ExtResource("r5_storeroom"), ExtResource("r6_pillar_hall"), ExtResource("r7_dining"), ExtResource("r8_corridor_l")])
+object_defs = Array[ExtResource("2_objscr")]([ExtResource("o0_shelf"), ExtResource("o1_pillar"), ExtResource("o2_table"), ExtResource("o3_barrel"), ExtResource("o4_crate"), ExtResource("o5_vase"), ExtResource("o6_books")])

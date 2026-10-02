@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/rooms/room_layout.gd" id="1_layout"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/barrel.tscn" id="2_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/rug.tscn" id="3_rug"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/hole.tscn" id="4_hole"]
+
+[node name="CorredorEmL" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 384.0
+offset_bottom = 320.0
+script = ExtResource("1_layout")
+id = &"corridor_l"
+display_name = "Corredor em L"
+tag = "corridor"
+tone = 0.02
+
+[node name="Buracos" type="Node2D" parent="."]
+
+[node name="Buraco1" parent="Buracos" instance=ExtResource("4_hole")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 384.0
+offset_bottom = 320.0
+
+[node name="Tapetes" type="Node2D" parent="."]
+
+[node name="Tapete1" parent="Tapetes" instance=ExtResource("3_rug")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 32.0
+offset_right = 384.0
+offset_bottom = 64.0
+
+[node name="Tapete2" parent="Tapetes" instance=ExtResource("3_rug")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 64.0
+offset_bottom = 320.0
+
+[node name="Objetos" type="Node2D" parent="."]
+
+[node name="Barril1" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 0.0
+offset_right = 384.0
+offset_bottom = 32.0
+
+[node name="Barril2" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 96.0
+
+[node name="Barril3" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 256.0
+offset_right = 64.0
+offset_bottom = 288.0

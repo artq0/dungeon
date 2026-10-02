@@ -1,0 +1,219 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/rooms/room_layout.gd" id="1_layout"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/barrel.tscn" id="2_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/crate.tscn" id="3_crate"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/vase.tscn" id="4_vase"]
+
+[node name="Armazem" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 384.0
+offset_bottom = 288.0
+script = ExtResource("1_layout")
+id = &"storeroom"
+display_name = "Armazém"
+tag = "storage"
+tone = -0.02
+
+[node name="Buracos" type="Node2D" parent="."]
+
+[node name="Tapetes" type="Node2D" parent="."]
+
+[node name="Objetos" type="Node2D" parent="."]
+
+[node name="Caixa1" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 32.0
+offset_bottom = 32.0
+
+[node name="Caixa2" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 0.0
+offset_right = 64.0
+offset_bottom = 32.0
+
+[node name="Barril1" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 0.0
+offset_right = 96.0
+offset_bottom = 32.0
+
+[node name="Barril2" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 0.0
+offset_right = 320.0
+offset_bottom = 32.0
+
+[node name="Caixa3" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 0.0
+offset_right = 352.0
+offset_bottom = 32.0
+
+[node name="Caixa4" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 0.0
+offset_right = 384.0
+offset_bottom = 32.0
+
+[node name="Caixa5" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 64.0
+
+[node name="Barril3" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Barril4" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 32.0
+offset_right = 352.0
+offset_bottom = 64.0
+
+[node name="Caixa6" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 32.0
+offset_right = 384.0
+offset_bottom = 64.0
+
+[node name="Caixa7" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 128.0
+offset_bottom = 128.0
+
+[node name="Caixa8" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 96.0
+offset_right = 160.0
+offset_bottom = 128.0
+
+[node name="Caixa9" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 96.0
+offset_right = 256.0
+offset_bottom = 128.0
+
+[node name="Caixa10" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 96.0
+offset_right = 288.0
+offset_bottom = 128.0
+
+[node name="Caixa11" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 128.0
+offset_right = 128.0
+offset_bottom = 160.0
+
+[node name="Caixa12" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 160.0
+offset_bottom = 160.0
+
+[node name="Barril5" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 128.0
+offset_right = 256.0
+offset_bottom = 160.0
+
+[node name="Vaso1" parent="Objetos" instance=ExtResource("4_vase")]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 128.0
+offset_right = 288.0
+offset_bottom = 160.0
+
+[node name="Caixa13" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 224.0
+offset_right = 32.0
+offset_bottom = 256.0
+
+[node name="Barril6" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 224.0
+offset_right = 64.0
+offset_bottom = 256.0
+
+[node name="Barril7" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 224.0
+offset_right = 352.0
+offset_bottom = 256.0
+
+[node name="Caixa14" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 224.0
+offset_right = 384.0
+offset_bottom = 256.0
+
+[node name="Caixa15" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 256.0
+offset_right = 32.0
+offset_bottom = 288.0
+
+[node name="Caixa16" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 256.0
+offset_right = 64.0
+offset_bottom = 288.0
+
+[node name="Barril8" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 256.0
+offset_right = 96.0
+offset_bottom = 288.0
+
+[node name="Barril9" parent="Objetos" instance=ExtResource("2_barrel")]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 256.0
+offset_right = 320.0
+offset_bottom = 288.0
+
+[node name="Caixa17" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 256.0
+offset_right = 352.0
+offset_bottom = 288.0
+
+[node name="Caixa18" parent="Objetos" instance=ExtResource("3_crate")]
+layout_mode = 0
+offset_left = 352.0
+offset_top = 256.0
+offset_right = 384.0
+offset_bottom = 288.0

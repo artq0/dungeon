@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/monster_def.gd" id="1_mon"]
+
+[resource]
+script = ExtResource("1_mon")
+id = &"bat"
+display_name = "Morcego"
+kind = 1
+radius = 8.0
+max_hp = 2.0
+speed = 105.0
+contact_damage = 7.0
+spawn_weight = 26.0

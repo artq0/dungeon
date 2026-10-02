@@ -1,5 +1,6 @@
+class_name Monster
 extends Node2D
-## Monstros: 0 = slime, 1 = morcego, 2 = ogro, 3 = esqueleto.
+## Monstros: kind 0 = slime, 1 = morcego, 2 = ogro, 3 = esqueleto (atributos vêm de um MonsterDef).
 ## Só ficam visíveis na sala do jogador ou quando há linha de visão (porta aberta).
 
 signal died(m)
@@ -8,6 +9,7 @@ var dungeon
 var game
 var player
 
+var def: MonsterDef
 var kind: int = 0
 var radius: float = 11.0
 var max_hp: float = 3.0
@@ -23,32 +25,20 @@ var phase: float = 0.0
 var wander_dir := Vector2.ZERO
 var wander_t: float = 0.0
 var aggro: bool = false
+var stuck_t: float = 0.0
+var detour_t: float = 0.0
+var detour_dir := Vector2.ZERO
 
 
-func setup(k: int) -> void:
-	kind = k
+## Aplica os atributos de um MonsterDef (res://data/monsters/*.tres).
+func setup(d: MonsterDef) -> void:
+	def = d
+	kind = d.kind
 	phase = randf() * TAU
-	match k:
-		0:
-			radius = 11.0
-			max_hp = 3.0
-			speed = 62.0
-			contact_damage = 10.0
-		1:
-			radius = 8.0
-			max_hp = 2.0
-			speed = 105.0
-			contact_damage = 7.0
-		2:
-			radius = 14.0
-			max_hp = 6.0
-			speed = 48.0
-			contact_damage = 16.0
-		3:
-			radius = 10.0
-			max_hp = 3.0
-			speed = 80.0
-			contact_damage = 9.0
+	radius = d.radius
+	max_hp = d.max_hp
+	speed = d.speed
+	contact_damage = d.contact_damage
 	hp = max_hp
 
 
@@ -61,13 +51,19 @@ func _process(delta: float) -> void:
 	var dist: float = to_p.length()
 	var my_room: int = dungeon.room_at(position)
 	var same_room: bool = my_room != -1 and my_room == game.current_room
-	var los: bool = dist < 420.0 and dungeon.has_los(player.position, position)
+	var los_clear: bool = dungeon.has_los(player.position, position)
+	var los: bool = dist < 420.0 and los_clear
 
-	# fog: objetos de outras salas ficam escondidos
-	var seen: bool = same_room or los
-	vis = move_toward(vis, 1.0 if seen else 0.0, delta * 5.0)
+	# fog: monstros de outras salas ficam escondidos; na própria sala, objetos altos
+	# (estantes, pilares) escondem parcialmente quem está atrás deles
+	var target_vis: float = 0.0
+	if same_room:
+		target_vis = 1.0 if los_clear else 0.3
+	elif los:
+		target_vis = 0.78
+	vis = move_toward(vis, target_vis, delta * 5.0)
 	visible = vis > 0.02
-	modulate.a = vis * (1.0 if same_room else 0.78)
+	modulate.a = vis
 
 	aggro = (same_room or (los and dist < 360.0)) and not player.dead
 
@@ -76,6 +72,9 @@ func _process(delta: float) -> void:
 		var dir: Vector2 = to_p / dist
 		if kind == 1:
 			dir = (dir + dir.orthogonal() * sin(phase * 0.5) * 0.9).normalized()
+		if detour_t > 0.0:  # preso num obstáculo: contorna por um lado
+			detour_t -= delta
+			dir = detour_dir
 		desired = dir * speed
 	else:
 		wander_t -= delta
@@ -97,7 +96,19 @@ func _process(delta: float) -> void:
 				push += dv / l * (min_d - l) * 8.0
 
 	knock = knock.move_toward(Vector2.ZERO, 900.0 * delta)
+	var before: Vector2 = position
 	position = dungeon.move_circle(position, (vel + knock + push) * delta, radius)
+
+	# anti-travamento: se mandou andar e quase não saiu do lugar, contorna o obstáculo
+	if aggro and dist > 1.0 and detour_t <= 0.0:
+		if position.distance_to(before) < desired.length() * delta * 0.25:
+			stuck_t += delta
+			if stuck_t > 0.2:
+				stuck_t = 0.0
+				detour_t = 0.7
+				detour_dir = (to_p / dist).orthogonal() * (1.0 if randf() < 0.5 else -1.0)
+		else:
+			stuck_t = maxf(0.0, stuck_t - delta)
 
 	if aggro and dist < radius + 10.0:
 		player.take_damage(contact_damage, to_p.normalized())

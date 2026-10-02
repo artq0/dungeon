@@ -35,7 +35,7 @@ func _ready() -> void:
 	box.add_child(title)
 
 	var sub := Label.new()
-	sub.text = "protótipo v0.2"
+	sub.text = "protótipo v0.5"
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.add_theme_color_override("font_color", Color(0.6, 0.6, 0.7))
 	box.add_child(sub)
@@ -54,7 +54,7 @@ func _ready() -> void:
 	controls_panel.visible = false
 	controls_panel.add_theme_stylebox_override("panel", _sb(Color(0.08, 0.08, 0.12)))
 	var lbl := Label.new()
-	lbl.text = "WASD  -  mover\nMouse  -  mirar\nBotão esquerdo  -  atacar com a espada\nPortas fechadas: ataque até quebrar\nESC  -  voltar ao menu"
+	lbl.text = "WASD  -  mover\nMouse  -  mirar\nBotão esquerdo  -  atacar com a espada\nPortas fechadas: ataque até quebrar\nBarris, caixas, vasos e livros: ataque para destruir\nEstantes, mesas e pilares bloqueiam o caminho\nESC  -  voltar ao menu"
 	lbl.add_theme_font_size_override("font_size", 18)
 	controls_panel.add_child(lbl)
 	box.add_child(controls_panel)

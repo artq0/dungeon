@@ -1,3 +1,4 @@
+class_name Hud
 extends Control
 ## HUD: barra de vida no topo, crosshair, dica de porta e tela de game over.
 
@@ -9,15 +10,25 @@ var shown_hp: float = 100.0
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+## Chamado pelo Game depois que tudo está pronto.
+func setup(g, p) -> void:
+	game = g
+	player = p
 	shown_hp = player.hp
 
 
 func _process(delta: float) -> void:
+	if player == null:
+		return
 	shown_hp = move_toward(shown_hp, player.hp, 45.0 * delta)
 	queue_redraw()
 
 
 func _draw() -> void:
+	if player == null:
+		return
 	var font: Font = ThemeDB.fallback_font
 	var vs: Vector2 = get_viewport_rect().size
 
@@ -26,7 +37,7 @@ func _draw() -> void:
 	var bar := Rect2((vs.x - bw) * 0.5, 18.0, bw, 24.0)
 	draw_rect(Rect2(bar.position - Vector2(3, 3), bar.size + Vector2(6, 6)), Color(0, 0, 0, 0.65))
 	draw_rect(bar, Color(0.18, 0.05, 0.07))
-	var maxhp: float = player.MAX_HP
+	var maxhp: float = player.max_hp
 	draw_rect(Rect2(bar.position, Vector2(bw * clampf(shown_hp / maxhp, 0.0, 1.0), bar.size.y)), Color(0.96, 0.85, 0.85, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bw * clampf(player.hp / maxhp, 0.0, 1.0), bar.size.y)), Color(0.85, 0.15, 0.2))
 	draw_rect(bar, Color(0, 0, 0, 0.8), false, 2.0)

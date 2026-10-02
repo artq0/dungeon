@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ObjectDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/object_def.gd" id="1_obj"]
+
+[resource]
+script = ExtResource("1_obj")
+id = &"table"
+display_name = "Mesa"
+tall = false
+destructible = false
+hp = 0.0
+scatter = 2
+scatter_weight = 4.0
+color = Color(0.52, 0.35, 0.19, 1)

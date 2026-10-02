@@ -1,0 +1,213 @@
+# DUNGEON PROTOTYPE - GAME CONTEXT PROMPT (version 0.5)
+
+This file is a complete, self-contained description of the game's CURRENT state. Another AI that receives only this file must be able to understand every system of the game and continue working on it. Always regenerate it according to the rule below.
+
+## CONTEXT UPDATE RULE
+
+After EVERY requested modification, `DUNGEON_CONTEXT.txt` must be regenerated as a **new complete version of this prompt**, updated to accurately describe the game's current state.
+
+Do NOT treat `DUNGEON_CONTEXT.txt` as a permanent static prompt with only a changelog appended to it.
+
+When a new feature is implemented:
+
+* Update the relevant sections of this prompt itself.
+* Add the new feature to `CURRENT GAME` or the appropriate section.
+* Update existing descriptions when a system has changed.
+* Remove or rewrite outdated information when necessary.
+* Keep all previous valid game information.
+* The resulting `.txt` must describe the game's CURRENT state, not just its history.
+
+Example:
+
+Before:
+`CURRENT GAME`
+
+* Procedural dungeon
+* Melee knight combat
+* Enemies
+* Fog of war
+
+After adding a shop and inventory, the next `DUNGEON_CONTEXT.txt` should become:
+
+`CURRENT GAME`
+
+* Procedural dungeon
+* Melee knight combat
+* Enemies
+* Fog of war
+* Player inventory
+* Shop system
+* Items can be obtained through shops
+* Inventory integrates with the player's progression
+
+NOT:
+`CURRENT GAME`
+
+* Procedural dungeon
+* Melee knight combat
+* Enemies
+* Fog of war
+
+`CHANGES`
+
+* Added shop
+* Added inventory
+
+The changelog may still exist, but the **actual game information must be incorporated into the main prompt itself**.
+
+The `.txt` must always be self-contained: another AI receiving only the latest `DUNGEON_CONTEXT.txt` must be able to understand the game's current systems without needing previous versions or this conversation.
+
+## PROJECT OVERVIEW
+
+* Title (menu): "DUNGEON ABISSAL"; project name "Dungeon Prototype"; menu subtitle "protótipo v0.5".
+* 2D top-down action dungeon crawler in the style of Enter the Gungeon, made in Godot 4 (project features list 4.7, README says 4.3+), GL Compatibility renderer, viewport 1280x720, stretch mode canvas_items.
+* EVERYTHING is drawn by code (no image assets) and all sounds are synthesized by code (no audio files).
+* Since v0.4 the project is EDITOR-FRIENDLY: game content and tuning live in Godot Resource files (`.tres`, edited in the Inspector) instead of constants inside `.gd` scripts, and `scenes/game.tscn` contains the real node tree. Since v0.5 the predefined rooms are real scenes (`scenes/rooms/*.tscn`) built visually from draggable parts. Code is still the only source of in-game graphics/sound (the parts only have an editor-side representation).
+* The user (the developer) communicates in Portuguese; in-game text is in Portuguese.
+* Export: a "Web" preset exists (for GitHub Pages, docs/index.html, Thread Support OFF).
+
+## FILE STRUCTURE (res://)
+
+* project.godot - main scene `scenes/menu.tscn`; autoload `Sfx` = `scripts/sfx.gd`
+* scenes/menu.tscn - Control with `scripts/menu.gd`
+* scenes/game.tscn - REAL NODE TREE: `Game` (scripts/game.gd; exports: camera look-ahead/room focus, monster_scene, monster_defs, spawn counts) with children `Dungeon` (scripts/dungeon.gd, export `settings` = data/dungeon_settings.tres), `Fx` (scripts/fx.gd), `Monsters` (empty Node2D layer), `Player` (scripts/player.gd, exported stats), `Camera` (Camera2D zoom 1.5), `HudLayer` (CanvasLayer 10) > `Hud` (Control, scripts/hud.gd)
+* scenes/monster.tscn - Node2D with scripts/monster.gd; instanced by Game for each spawned monster
+* scenes/rooms/*.tscn - the 9 predefined rooms, one scene each (root = `RoomLayout` Control with three Node2D folders `Buracos`, `Tapetes`, `Objetos` holding part instances). Edited visually in the 2D editor.
+* scenes/rooms/parts/*.tscn - draggable parts: shelf, pillar, table, barrel, crate, vase, books (each a `RoomObject` with `def` = the matching data/objects/*.tres), rug (`RoomRug`), hole (`RoomHole`)
+* scripts/rooms/room_part.gd - `class_name RoomPart` (@tool Control): base of every part; defines `TILE = 32`; in the editor it snaps position and size to the 32 px grid
+* scripts/rooms/room_object.gd - `class_name RoomObject`: 1x1 object, export `def: ObjectDef`; draws a colored box with the initial letter (tall = light top stripe, destructible = white dot)
+* scripts/rooms/room_rug.gd - `class_name RoomRug`: rug, resizable rectangle in whole tiles
+* scripts/rooms/room_hole.gd - `class_name RoomHole`: removes floor under its rectangle (L-shaped / U-shaped rooms)
+* scripts/rooms/room_layout.gd - `class_name RoomLayout` (@tool Control, the room root): room size = root size in whole tiles; exports id, display_name, tag (library/corridor/storage/hall/other), enabled, weight, tone, allow_flip_x/flip_y/rotate; `extract()` reads the scene into a plain Dictionary (cells, rugs, defs, tiles, warnings, door_spots + metadata); draws floor, walls, green door-spot marks, title and warnings in the editor and exposes the warnings as the node's configuration warning triangle
+* resources/object_def.gd - `class_name ObjectDef` (@tool Resource): id, display_name, tall, destructible, hp, scatter (0 none / 1 corners / 2 interior of random rooms), scatter_weight, color
+* resources/dungeon_settings.gd - `class_name DungeonSettings` (@tool Resource): room_count_min/max, room_width/room_height (Vector2i min,max), template_chance, force_libraries, random_styles (flags), door_hp, fog_color/unseen/peek/visited/shade, tint_hue/saturation/value ranges, `room_scenes` (Array[PackedScene], the room scenes), `object_defs` (Array[ObjectDef])
+* resources/monster_def.gd - `class_name MonsterDef` (Resource): id, display_name, kind (0 slime, 1 bat, 2 ogre, 3 skeleton = drawing/behavior), radius, max_hp, speed, contact_damage, spawn_weight
+* data/dungeon_settings.tres - the default DungeonSettings (lists the 9 room scenes and 7 object defs)
+* data/objects/*.tres - one ObjectDef per object: shelf, pillar, table, barrel, crate, vase, books
+* data/monsters/*.tres - one MonsterDef per monster: slime, bat, ogre, skeleton
+* scripts/dungeon.gd - `class_name Dungeon`: procedural generation driven by `settings` (reads each room scene once with `RoomLayout.extract()`), objects, collision queries, fog + shadows, ALL map drawing (floor, walls, doors, rugs, objects)
+* scripts/game.gd - main scene script: wires the scene nodes, generates the dungeon, spawns monsters from monster_defs, camera, door/object hit feedback, game over / restart
+* scripts/player.gd - `class_name Player`: knight: movement, sword swing, damage to monsters / doors / destructible objects, procedural drawing (stats are @export)
+* scripts/monster.gd - `class_name Monster`: AI, fog visibility, anti-stuck detour, procedural drawing for 4 kinds; `setup(def: MonsterDef)`
+* scripts/fx.gd - `class_name Fx`: particles: door splinters, object debris, dust, sparks, flashes, rings, monster death bursts
+* scripts/hud.gd - `class_name Hud`: health bar, door hint, crosshair, game over screen; `setup(game, player)` is called by Game
+* scripts/menu.gd - main menu (title, PLAY, CONTROLS, QUIT on non-web, ember particles)
+* scripts/sfx.gd - autoload: synthesized sounds, `Sfx.play(name, volume_db, pitch, pitch_jitter)`
+* README.md - editor workflow: how to edit/create rooms, objects, monsters, settings; how to run/export
+
+## CURRENT GAME
+
+* Procedural dungeon of 6-9 rooms (random per run) connected by breakable wooden doors
+* Wooden theme: planked wooden floors, wooden walls, wooden doors with iron bands
+* Randomly generated rooms (6 shape styles, individually switchable) mixed with hand-designed predefined room templates (4 libraries + corridors + other rooms), randomly mirrored/rotated
+* Objects, monsters and generation/fog/door tuning are DATA (`.tres` Resources) editable in the Godot Inspector; predefined rooms are scenes (`scenes/rooms/*.tscn`) edited visually in the 2D editor by dragging parts (shelves, barrels, rugs, holes...) that snap to the grid
+* Two kinds of room objects: blocking objects (bookshelf, pillar, table) and destructible objects (barrel, crate, vase, book pile)
+* Tall blockers (bookshelves, pillars) cast partial fog shadow behind them and partially hide monsters standing behind them
+* Fog of war per room (unseen rooms show only their shape once adjacent) plus the shadow system above
+* Melee knight with a swinging sword (hits monsters, doors and destructible objects)
+* 4 enemy types (slime, bat, ogre, skeleton) with simple chase AI and a small anti-stuck detour
+* Doors must be broken by attacking; a room with no living monsters lets the next hit break the door instantly
+* Camera with zoom, mouse look-ahead, screen shake, soft pull to the current room's center
+* Procedural particle effects and procedural sound effects
+* HUD with health bar, door hint, crosshair, game over screen with restart
+* Main menu with controls panel
+
+## DUNGEON SYSTEM (scripts/dungeon.gd)
+
+Dungeon is a node with `@export var settings: DungeonSettings` (empty = loads res://data/dungeon_settings.tres, or built-in defaults with no templates/objects). `generate(room_count = -1)` calls `apply_settings()` (copies fog/door values into member vars fog_color, fog_unseen, fog_peek, fog_visited, fog_shade, door_hp, template_chance and builds the object/template tables) and, when room_count < 1, rolls it between settings.room_count_min and room_count_max (default 6-9; Game calls `dungeon.generate()` with no argument).
+
+Grid constants: TILE=32 px; cell types VOID=0, FLOOR=1, WALL=2, DOOR=3. Data: `grid` (cell -> type), `room_of` (floor cell -> room index), `wall_rooms` (wall cell -> rooms that see it, for fog), `rooms`, `doors`, `door_at` (cell -> door index), `objects` (cell -> object dict), `shade`/`shade_goal` (shadow values).
+
+Generation:
+* Room 0 is always a random-style room (style 0-5); it is the spawn room, gets only corner destructibles, never blockers.
+* Each next room is attached to the previous room (65%) or to a random existing room (35%), in a random direction (right/left/down/up), up to 80 attempts, with up to 6 position tries per direction.
+* A new room is a predefined template with probability settings.template_chance=0.5 (85% when force_libraries is on, at least 2 rooms exist, no library has been placed yet and a library template is enabled), otherwise a random-size room (settings.room_width 10-18 x room_height 8-13 tiles) with a random style among the ones enabled in settings.random_styles. If no template is enabled, only random rooms are generated.
+* Random styles (bit flags in settings.random_styles, default all 6 on): 0 plain rectangle, 1 grid of 2x2 pillar-holes, 2 cut corners, 3 ellipse, 4 scattered 1-cell holes, 5 cross shape. (Style 6 = predefined template.)
+* Rooms are adjacent with a 1-tile gap holding a 2-tile-wide door. A door is only placed where both sides have 2 consecutive FREE floor cells (no objects) on the shared edge; rooms may not overlap other rooms' rect grown by 2.
+* After placement `_finalize()` builds walls around all floor/door cells (8-neighborhood), computes which rooms see each wall, computes "open cells" (all 8 neighbors are floor of the same room and have no objects) used for spawning, decorates random rooms, then recomputes open cells.
+* `free_cells(room)` returns open cells (or any object-free cell if none); monsters spawn and the player starts only on such cells.
+* Each room dict: rect, style, name (template name or ""), cells, open_cells, visited, known, fog, doors, deco (rug cells), has_tall, tint (wood tone from HSV ranges settings.tint_hue 0.055-0.095, tint_saturation 0.42-0.58, tint_value 0.34-0.44; templates darken/lighten via their "tone").
+
+Predefined rooms are scenes (scenes/rooms/*.tscn) whose root is a `RoomLayout`, listed in `settings.room_scenes` (only rooms with `enabled` and weight > 0 are used). On generation the Dungeon instantiates each scene once, calls `extract()` and frees it, keeping a plain Dictionary per room: floor cells = root rectangle (in 32 px tiles) minus the rectangles of `RoomHole` parts; each `RoomObject` marks its cell with its ObjectDef id (objects outside the floor, stacked, or without a def are ignored with a warning); each `RoomRug` marks rug cells (clipped to the floor); `tag` "library" counts as library. Parts may sit in any nesting of Node2D/Control folders. The 9 shipped rooms:
+* Libraries: "Salão das Estantes" 16x11 (three rows of shelves with a central gap, tables on rugs), "Sala de Leitura" 13x10 (shelves on top/side walls, big central table on a rug), "Arquivo" 14x12 (four vertical shelf stacks with aisles and cross gaps, rug), "Biblioteca em Ruínas" 14x10 (few shelves, many book piles/vases/crates).
+* Others: "Corredor" 20x3 (barrels/crate, rug runner), "Corredor em L" 12x10 (L-shaped, uses void cells), "Armazém" 12x9 (clusters of crates and barrels), "Salão de Pilares" 14x9 (two rows of 4 pillars, rug runner), "Refeitório" 16x9 (two long tables, barrels, vases).
+* Each use is randomly flipped on X, flipped on Y and transposed (rotated) (each can be disabled per room with allow_flip_x / allow_flip_y / allow_rotate), so shapes appear in up to 8 orientations.
+* Room choice: weight = room.weight / (1 + times already used in this dungeon); a library is forced early (first library as soon as 2 rooms exist, a second one once 4+ rooms exist when possible) when settings.force_libraries is on.
+* All shipped templates keep their free cells connected (verified) and keep free 2-cell stretches on their borders for doors. `RoomLayout.extract()` warnings (shown in the editor as the warning triangle on the root and as orange text below the room, and printed with push_warning at generation) report no floor, objects outside the floor or stacked, objects without Def, disconnected free floor, and no border spot with 2 free tiles for a door.
+
+Random-room decoration (`_decorate_room`): 1-4 objects from the ObjectDefs with scatter = "corners" (default: barrel weight 2, crate 1, vase 1, books 1) in corner cells (+ sometimes a neighbor), not within 2 tiles of a door; except room 0, 0-3 objects from the ones with scatter = "interior" (default: pillar weight 6, table weight 4) in the room's open interior, spaced >=3 cells apart, not touching other objects, not near doors. Every placement is rolled back if it would disconnect the room's free cells (4-neighbor BFS).
+
+Collision/queries: `is_solid_cell/pos` (walls, closed doors, ANY object block movement), `blocks_sight_cell` (walls, closed doors, tall objects), `has_los` (samples every 8 px with blocks_sight), `move_circle` (axis-separated box-corner collision), `room_at`, `room_center`, `center_open_cell`, `pos_to_cell`, `cell_center`.
+
+## OBJECTS
+
+Defined by `ObjectDef` resources (data/objects/*.tres, listed in settings.object_defs: id, symbol, tall, destructible, hp, scatter, scatter_weight, color); stored in `dungeon.objects` as dict {type, room, tall, destructible, hp, max_hp, shake, v(hash for visual variation)}. Objects occupy one cell (a FLOOR cell) and block movement for player, monsters and debris.
+* Blocking, indestructible: `shelf` (tall: blocks sight, casts shadow; drawn with colorful book spines on the front face; vertical stacks draw as wood top), `pillar` (tall wooden beam), `table` (low: does NOT block sight; adjacent tables merge visually; sometimes has a candle or open book on top).
+* Destructible (sword does 1 damage per swing per object; also block movement until broken): `barrel` hp 2, `crate` hp 3, `vase` hp 1, `books` (book pile) hp 1. They show cracks when damaged, shake on hit, and when broken are removed from the map and burst into debris (wood planks/splinters, clay shards, paper/cover scraps), dust, flash and sparks, with screen shake and a (pitched-up) door sound. They drop nothing (no loot system yet). The 7 shipped ids have hand-written drawing code; any NEW ObjectDef id is drawn by the generic fallback `_draw_generic` (a box in the ObjectDef color with shadow and cracks) and uses the default wood debris colors in fx.gd, so new objects work from the editor with no code.
+
+## FOG OF WAR AND SHADOWS
+
+* Per-room fog value: current room 0.0, visited rooms settings.fog_visited=0.5, rooms seen through an open door fog_peek=0.7, unseen fog_unseen=0.9 (rooms not yet "known" are not drawn at all). Fog lerps floor/wall/object colors toward settings.fog_color (0.17,0.19,0.26) and adds a subtle wobbling light-blue overlay.
+* A room becomes known when entered, when an adjacent door is opened, or when entering a neighbor room.
+* Shadow behind tall objects (partial fog): for the player's current room, if it contains tall objects, each floor cell is tested for line of sight from the player (sampled every 16 px, ignoring the cell itself); blocked cells fade toward fog by settings.fog_shade=0.55. Targets refresh round-robin (1/4 of cells per frame) and are smoothed. Objects in shadowed cells are dimmed too. Walls are not affected.
+* Monsters: in the player's room they are fully visible with line of sight (alpha 1.0), only 0.3 alpha when a tall object blocks sight; in other rooms they are visible (0.78) only with line of sight within 420 px (e.g. through an open door); otherwise hidden. Fading is smoothed.
+
+## DOORS
+
+* Each door is 2 tiles wide, settings.door_hp=8 (one hit per swing per door); closed doors block movement and sight; cracks appear with damage; shake on hit; wood chips/sparks on hit.
+* If the player's current room has no living monsters, a single sword hit breaks the door instantly (9999 damage). Breaking opens the door (both rooms become known), big screen shake, splinters/ironwork debris, flash and shockwave rings.
+* Hint text near a closed door: "Ataque a porta para abri-la (N%)" or, when the room is cleared, "Sala limpa! Um golpe quebra a porta".
+
+## PLAYER (scripts/player.gd)
+
+* Knight drawn procedurally (armor, blue tabard, shield, helmet with red plume, cape, sword). Stats are @export vars on the Player node (Inspector): speed 215, accel 2200, radius 10, max_hp 100, swing_time 0.22, swing_cooldown 0.10, swing_arc 2.9 rad, reach 58, sword_damage 1.0 (hp is set from max_hp in _ready).
+* Movement: WASD (physical keys), aim with mouse; hold left mouse button to swing continuously; swings alternate direction; each swing gives a small forward lunge.
+* The swing hits each monster once (needs line of sight), each door once, each destructible object once. Door/object detection samples the blade at 22/38/54 px.
+* Taking damage: invulnerable 0.8 s with blinking, knockback, red sparks, screen shake; death at 0 HP.
+
+## MONSTERS (scripts/monster.gd, resources/monster_def.gd)
+
+Each monster is an instance of scenes/monster.tscn configured with a `MonsterDef` (data/monsters/*.tres, listed in Game > monster_defs). `kind` selects drawing/behavior: 0 slime (radius 11, hp 3, speed 62, contact damage 10, spawn_weight 35), 1 bat (radius 8, hp 2, speed 105, dmg 7, weight 26, erratic sinusoidal flight), 2 ogre (radius 14, hp 6, speed 48, dmg 16, weight 16), 3 skeleton (radius 10, hp 3, speed 80, dmg 9, weight 23). Each spawn is a weighted random pick over spawn_weight (so the default odds are 35% slime, 23% skeleton, 26% bat, 16% ogre). Count per room: clamp(cell_count / cells_per_monster(60), monsters_min(2), monsters_max(6)) + randi 0..extra_monsters_max(1); room 0 gets first_room_monsters (2), only farther than first_room_min_distance (130 px) from the player. All these are exports of the Game node.
+* Aggro when in the player's room, or with line of sight and within 360 px; otherwise they wander slowly. Chase directly (no pathfinding), contact damage on touch, soft separation between monsters, knockback when hit.
+* Anti-stuck: if a chasing monster barely moves for ~0.2 s it detours sideways (random side) for 0.7 s, so they get around shelves/pillars/barrels.
+* Death: burst of colored debris, flash, sound, screen shake.
+
+## CAMERA, GAME FLOW, HUD, MENU
+
+* Camera2D node "Camera" (zoom 1.5 set in the scene); follows the player plus up to look_ahead_max=100 px of mouse look-ahead (look_ahead=16% of mouse offset), pulled room_focus=0.3 toward the current room's center; smooth; screen shake. look_ahead, look_ahead_max and room_focus are exports of Game.
+* HUD (CanvasLayer): top health bar "VIDA n / 100" with delayed damage trail, door hint at the bottom, controls line, custom crosshair (system cursor hidden in game), game over overlay "VOCÊ MORREU" with "R - nova dungeon   ESC - menu".
+* Menu: title, PLAY, CONTROLS (toggle panel listing controls, including that doors/barrels/crates/vases/books can be destroyed and shelves/tables/pillars block the way), QUIT (not on web), animated ember particles. ESC in game returns to the menu.
+
+## EFFECTS AND AUDIO
+
+* fx.gd: pooled particle items (max 450): debris with fake height/bounce/fade (collides with solids), puffs, sparks, flashes, rings. Functions: door_break, door_chips, object_break, object_chips, hit_sparks, death_burst, dust, sparks, flash, ring.
+* sfx.gd (autoload Sfx): sounds generated as AudioStreamWAV at startup: click, step, swing, hit, hurt, pdie, door_hit, door_break, die0-die3. Object hits reuse door_hit/door_break with higher pitch and lower volume.
+
+## CONTROLS
+
+WASD move | Mouse aim | Left mouse button attack | ESC menu | R (after dying) new dungeon.
+
+## QUICK TUNING POINTS (all in the Godot Inspector unless noted)
+
+* data/dungeon_settings.tres (or the Dungeon node > Settings): room counts, room sizes, template_chance, force_libraries, random_styles, door_hp, fog values (fog_shade = shadow strength), wood tint ranges, the room_scenes list and the object_defs list.
+* scenes/rooms/*.tscn: open a room, drag/duplicate/delete parts (they snap to the grid), pull the root handles to resize the room, pull rug/hole handles to resize them; root Inspector: name, tag, weight, tone, enabled, flip/rotate. New room: new scene with a `RoomLayout` root (or duplicate a room), add `Buracos`/`Tapetes`/`Objetos` Node2D folders, drag parts from scenes/rooms/parts/, then drag the .tscn into settings.room_scenes.
+* data/objects/*.tres: hp, tall, destructible, scatter group/weight, color. New object: duplicate a .tres and change the id, add it to settings.object_defs, then duplicate scenes/rooms/parts/shelf.tscn and set its Def to the new .tres to use it in rooms.
+* data/monsters/*.tres: radius, hp, speed, damage, spawn_weight. Game node: monster_defs list, spawn counts, camera exports.
+* Player node: movement/health/sword stats.
+* In code only: sounds (scripts/sfx.gd), graphics of each object/monster (draw functions), the AI constants in scripts/monster.gd (aggro distances etc.).
+
+## KNOWN LIMITATIONS / NOTES
+
+* Not tested inside the Godot editor by the assistant that wrote v0.3/v0.4 (no engine available there); if Godot reports a parse error, check scripts/dungeon.gd, the resources/*.gd scripts and scripts/rooms/*.gd first. If a `.tres` fails to load (typed arrays like `Array[ExtResource(...)]`), re-add the items in the Inspector and save.
+* Rooms are edited by dragging parts in the 2D editor; there is no tile-brush painting tool. Room scenes were written by hand without the engine: if a `.tscn` opens with a layout oddity, check that the root keeps top-left anchors (offsets define size). New `class_name` scripts need the editor to scan the project once before everything resolves.
+* Monsters have no real pathfinding (only the anti-stuck detour).
+* Destructible objects drop nothing; there is no inventory, loot, shop or progression system yet; no minimap; levels are not chained.
+* The player/monsters are drawn above objects (a character behind a bookshelf is not hidden by it, only the fog/shadow and monster transparency convey occlusion).
+* The GDScript files use tab indentation.
+
+## CHANGELOG (latest versions only; the sections above already describe the current state)
+
+* v0.5: predefined rooms are now real scenes (scenes/rooms/*.tscn) built visually from parts (scenes/rooms/parts/*.tscn: objects, rugs, holes) with grid snapping, resizable rugs/holes/room, live warnings and door-spot marks in the editor (scripts/rooms/*). The text-layout `RoomTemplate` resource, data/rooms/*.tres, scenes/tools/room_preview.tscn and ObjectDef.symbol were removed; DungeonSettings.room_templates became room_scenes. Gameplay unchanged.
+* v0.4: editor-friendly refactor. Room templates, object types, monster types and generation/fog/door settings moved from constants in `.gd` into Resources (`RoomTemplate`, `ObjectDef`, `MonsterDef`, `DungeonSettings`) stored as `.tres` in data/; scenes/game.tscn now holds the real node tree (Dungeon, Fx, Monsters, Player, Camera, HudLayer/Hud) and scenes/monster.tscn exists; Player/Game stats are @export; generic drawing for new object types; random room styles selectable; scatter objects of random rooms driven by ObjectDef; gameplay unchanged.
+* v0.3: wooden theme (floors, walls, doors); 9 predefined room templates (4 libraries, 2 corridors, storeroom, pillar hall, dining hall) with random mirroring/rotation; objects system with blockers (shelf, pillar, table) and destructibles (barrel, crate, vase, books); partial fog shadows behind tall objects and partial monster visibility; sword damages destructible objects; monster anti-stuck detour; spawns avoid objects; menu/README updated.
+* v0.2: breakable doors, per-room fog, 4 monster types, procedural particles and sounds, menu with embers.

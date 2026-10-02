@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://b7mvxk5x46jsi"]
+
+[ext_resource type="Script" uid="uid://ouyowkuo4svp" path="res://scripts/rooms/room_layout.gd" id="1_layout"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/barrel.tscn" id="2_barrel"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/pillar.tscn" id="3_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/rooms/parts/rug.tscn" id="4_rug"]
+
+[node name="SalaoDePilares" type="Control" unique_id=1690007732]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 8.0
+offset_right = 736.0
+offset_bottom = 296.0
+script = ExtResource("1_layout")
+id = &"pillar_hall"
+display_name = "Salão de Pilares"
+tag = "hall"
+tone = 0.04
+
+[node name="Buracos" type="Node2D" parent="." unique_id=1491343222]
+
+[node name="Tapetes" type="Node2D" parent="." unique_id=993771011]
+
+[node name="Tapete1" parent="Tapetes" unique_id=1498185645 instance=ExtResource("4_rug")]
+offset_top = 96.0
+offset_right = 736.0
+offset_bottom = 192.0
+
+[node name="Objetos" type="Node2D" parent="." unique_id=1035256980]
+
+[node name="Barril1" parent="Objetos" unique_id=658830677 instance=ExtResource("2_barrel")]
+
+[node name="Barril2" parent="Objetos" unique_id=700437886 instance=ExtResource("2_barrel")]
+offset_left = 704.0
+offset_right = 736.0
+
+[node name="Pilar1" parent="Objetos" unique_id=1843944194 instance=ExtResource("3_pillar")]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 96.0
+offset_bottom = 96.0
+
+[node name="Pilar2" parent="Objetos" unique_id=1133406059 instance=ExtResource("3_pillar")]
+offset_left = 160.0
+offset_top = 64.0
+offset_right = 192.0
+offset_bottom = 96.0
+
+[node name="Pilar3" parent="Objetos" unique_id=1560768129 instance=ExtResource("3_pillar")]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 288.0
+offset_bottom = 96.0
+
+[node name="Pilar4" parent="Objetos" unique_id=1662671851 instance=ExtResource("3_pillar")]
+offset_left = 352.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 96.0
+
+[node name="Pilar4" parent="Objetos/Pilar4" unique_id=2019388711 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_left = 96.0
+offset_right = 128.0
+
+[node name="Pilar5" parent="Objetos" unique_id=41821032 instance=ExtResource("3_pillar")]
+offset_left = 64.0
+offset_top = 192.0
+offset_right = 96.0
+offset_bottom = 224.0
+
+[node name="Pilar6" parent="Objetos" unique_id=520651379 instance=ExtResource("3_pillar")]
+offset_left = 160.0
+offset_top = 192.0
+offset_right = 192.0
+offset_bottom = 224.0
+
+[node name="Pilar7" parent="Objetos" unique_id=525181202 instance=ExtResource("3_pillar")]
+offset_left = 256.0
+offset_top = 192.0
+offset_right = 288.0
+offset_bottom = 224.0
+
+[node name="Pilar8" parent="Objetos" unique_id=854663431 instance=ExtResource("3_pillar")]
+offset_left = 352.0
+offset_top = 192.0
+offset_right = 384.0
+offset_bottom = 224.0
+
+[node name="Barril3" parent="Objetos" unique_id=1545326785 instance=ExtResource("2_barrel")]
+offset_top = 256.0
+offset_bottom = 288.0
+
+[node name="Barril4" parent="Objetos" unique_id=1255987117 instance=ExtResource("2_barrel")]
+offset_left = 704.0
+offset_top = 256.0
+offset_right = 736.0
+offset_bottom = 288.0
+
+[node name="Pilar4" parent="." unique_id=368856720 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 192.0
+offset_right = 480.0
+offset_bottom = 224.0
+
+[node name="Pilar4" parent="Pilar4" unique_id=1684721198 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_left = 96.0
+offset_right = 128.0
+
+[node name="Pilar4" parent="Pilar4/Pilar4" unique_id=218416780 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_top = -128.0
+offset_bottom = -96.0
+
+[node name="Pilar5" parent="." unique_id=1212686134 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_left = 640.0
+offset_top = 64.0
+offset_right = 672.0
+offset_bottom = 96.0
+
+[node name="Pilar4" parent="Pilar5" unique_id=2142954133 instance=ExtResource("3_pillar")]
+layout_mode = 0
+offset_top = 128.0
+offset_bottom = 160.0

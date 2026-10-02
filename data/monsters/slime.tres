@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MonsterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/monster_def.gd" id="1_mon"]
+
+[resource]
+script = ExtResource("1_mon")
+id = &"slime"
+display_name = "Slime"
+kind = 0
+radius = 11.0
+max_hp = 3.0
+speed = 62.0
+contact_damage = 10.0
+spawn_weight = 35.0

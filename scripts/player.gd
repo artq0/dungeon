@@ -1,22 +1,31 @@
+class_name Player
 extends Node2D
 ## Jogador (cavaleiro): WASD, mira no mouse, espada com swing (botão esquerdo).
+## Os números abaixo aparecem no Inspector quando você seleciona o nó Player em scenes/game.tscn.
 
 signal died
 
-const SPEED: float = 215.0
-const ACCEL: float = 2200.0
-const RADIUS: float = 10.0
-const MAX_HP: float = 100.0
-const SWING_TIME: float = 0.22
-const SWING_COOLDOWN: float = 0.10
-const SWING_ARC: float = 2.9
-const REACH: float = 58.0
-const SWORD_DAMAGE: float = 1.0
+@export_group("Movimento")
+@export var speed: float = 215.0
+@export var accel: float = 2200.0
+## Raio de colisão com paredes e objetos.
+@export var radius: float = 10.0
+
+@export_group("Vida")
+@export var max_hp: float = 100.0
+
+@export_group("Espada")
+@export var swing_time: float = 0.22
+@export var swing_cooldown: float = 0.10
+## Abertura do golpe em radianos.
+@export var swing_arc: float = 2.9
+@export var reach: float = 58.0
+@export var sword_damage: float = 1.0
 
 var dungeon
 var game
 
-var hp: float = MAX_HP
+var hp: float = 100.0
 var vel := Vector2.ZERO
 var aim := Vector2.RIGHT
 var invuln: float = 0.0
@@ -30,8 +39,13 @@ var swing_offset: float = 0.0
 var cooldown: float = 0.0
 var hit_monsters: Array = []
 var hit_doors: Array = []
+var hit_objects: Array = []
 var walk: float = 0.0
 var step_idx: int = 0
+
+
+func _ready() -> void:
+	hp = max_hp
 
 
 func _process(delta: float) -> void:
@@ -54,8 +68,8 @@ func _process(delta: float) -> void:
 		if Input.is_physical_key_pressed(KEY_D):
 			input.x += 1.0
 	input = input.normalized()
-	vel = vel.move_toward(input * SPEED, ACCEL * delta)
-	position = dungeon.move_circle(position, vel * delta, RADIUS)
+	vel = vel.move_toward(input * speed, accel * delta)
+	position = dungeon.move_circle(position, vel * delta, radius)
 
 	# passos
 	if vel.length() > 40.0 and not dead:
@@ -81,18 +95,19 @@ func _start_swing() -> void:
 	swinging = true
 	swing_t = 0.0
 	swing_base = aim.angle()
-	swing_offset = -SWING_ARC * 0.5 * swing_dir
+	swing_offset = -swing_arc * 0.5 * swing_dir
 	hit_monsters.clear()
 	hit_doors.clear()
+	hit_objects.clear()
 	vel += aim * 170.0
 	Sfx.play("swing", -3.0, 1.0, 0.1)
 
 
 func _update_swing(delta: float) -> void:
 	swing_t += delta
-	var k: float = clampf(swing_t / SWING_TIME, 0.0, 1.0)
+	var k: float = clampf(swing_t / swing_time, 0.0, 1.0)
 	var e: float = 1.0 - pow(1.0 - k, 2.0)
-	swing_offset = lerpf(-SWING_ARC * 0.5, SWING_ARC * 0.5, e) * swing_dir
+	swing_offset = lerpf(-swing_arc * 0.5, swing_arc * 0.5, e) * swing_dir
 	var blade_angle: float = swing_base + swing_offset
 
 	# monstros
@@ -101,13 +116,13 @@ func _update_swing(delta: float) -> void:
 		if not is_instance_valid(m) or hit_monsters.has(m):
 			continue
 		var rel: Vector2 = m.position - position
-		if rel.length() > REACH + m.radius:
+		if rel.length() > reach + m.radius:
 			continue
 		var off: float = angle_difference(swing_base, rel.angle()) * swing_dir
-		if off >= -SWING_ARC * 0.5 - 0.2 and off <= cur + 0.2:
+		if off >= -swing_arc * 0.5 - 0.2 and off <= cur + 0.2:
 			if dungeon.has_los(position, m.position):
 				hit_monsters.append(m)
-				m.take_damage(SWORD_DAMAGE, rel.normalized())
+				m.take_damage(sword_damage, rel.normalized())
 
 	# portas
 	for dist in [22.0, 38.0, 54.0]:
@@ -117,15 +132,23 @@ func _update_swing(delta: float) -> void:
 			var di: int = dungeon.door_at[cell]
 			if not hit_doors.has(di) and not dungeon.doors[di].open:
 				hit_doors.append(di)
-				var dmg: float = SWORD_DAMAGE
+				var dmg: float = sword_damage
 				if game.room_cleared(game.current_room):
 					dmg = 9999.0  # sala limpa: a porta quebra instantaneamente
 				var opened: bool = dungeon.damage_door(di, dmg)
 				game.on_door_hit(di, aim, opened)
+		# objetos destrutíveis (barril, caixa, vaso, livros): 1 dano por golpe
+		if dungeon.objects.has(cell) and not hit_objects.has(cell):
+			var ob: Dictionary = dungeon.objects[cell]
+			if ob.destructible:
+				hit_objects.append(cell)
+				var otype: String = ob.type
+				var broken: bool = dungeon.damage_object(cell, sword_damage)
+				game.on_object_hit(cell, otype, aim, broken)
 
 	if k >= 1.0:
 		swinging = false
-		cooldown = SWING_COOLDOWN
+		cooldown = swing_cooldown
 		swing_dir = -swing_dir
 
 
@@ -151,7 +174,7 @@ func take_damage(amount: float, from_dir: Vector2) -> void:
 func _draw() -> void:
 	var t: float = Time.get_ticks_msec() / 1000.0
 	var perp: Vector2 = aim.orthogonal()
-	var moving: float = clampf(vel.length() / SPEED, 0.0, 1.0)
+	var moving: float = clampf(vel.length() / speed, 0.0, 1.0)
 	var bob: Vector2 = Vector2(0.0, sin(walk * 2.0) * 1.0 * moving)
 
 	var steel := Color(0.66, 0.7, 0.78)
@@ -230,7 +253,7 @@ func _draw() -> void:
 	var ang: float = aim.angle() - swing_dir * 1.3
 	if swinging:
 		ang = swing_base + swing_offset
-		var a0: float = swing_base - swing_dir * SWING_ARC * 0.5
+		var a0: float = swing_base - swing_dir * swing_arc * 0.5
 		var lo: float = minf(a0, ang)
 		var hi: float = maxf(a0, ang)
 		if hi - lo > 0.05:

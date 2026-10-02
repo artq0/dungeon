@@ -1,3 +1,4 @@
+class_name Fx
 extends Node2D
 ## Partículas: estilhaços de porta, poeira, faíscas e pedaços de monstros.
 ## Peças "caem" com altura (z) fingida, quicam, ficam no chão e depois somem.
@@ -150,6 +151,49 @@ func door_chips(pos: Vector2, dir: Vector2) -> void:
 		_debris(pos, v, randf_range(120.0, 260.0), Vector2(randf_range(3.0, 6.0), randf_range(2.5, 4.0)),
 			wood.darkened(randf_range(0.0, 0.3)), 1, randf_range(0.6, 1.2), 0.5)
 	sparks(pos, dir, Color(0.95, 0.8, 0.5), 4)
+	dust(pos, 1, Color(0.75, 0.65, 0.5, 0.4), 8.0)
+
+
+## Cores dos pedaços de cada objeto destrutível.
+func _obj_colors(otype: String) -> Array:
+	match otype:
+		"vase":
+			return [Color(0.74, 0.42, 0.27), Color(0.5, 0.25, 0.15), Color(0.88, 0.58, 0.38)]
+		"books":
+			return [Color(0.85, 0.82, 0.7), Color(0.62, 0.18, 0.18), Color(0.2, 0.35, 0.55), Color(0.25, 0.5, 0.3)]
+		"crate":
+			return [Color(0.6, 0.44, 0.24), Color(0.46, 0.32, 0.16), Color(0.68, 0.5, 0.28)]
+		_:
+			return [Color(0.5, 0.32, 0.16), Color(0.38, 0.23, 0.11), Color(0.38, 0.4, 0.46)]
+
+
+## Objeto estilhaçando: tábuas/cacos/páginas voam, poeira e flash.
+func object_break(pos: Vector2, otype: String, dir: Vector2) -> void:
+	var cols: Array = _obj_colors(otype)
+	flash(pos, 26.0, 0.14)
+	for k in 12:
+		var v: Vector2 = dir * randf_range(40.0, 220.0) + Vector2.from_angle(randf() * TAU) * randf_range(20.0, 170.0)
+		var col: Color = cols[randi() % cols.size()]
+		var vz: float = randf_range(160.0, 360.0)
+		if otype == "books":
+			_debris(pos, v, vz, Vector2(randf_range(5.0, 9.0), randf_range(4.0, 7.0)), col, 0, randf_range(1.6, 2.6))
+		elif otype == "vase":
+			_debris(pos, v, vz, Vector2(randf_range(4.0, 8.0), randf_range(3.0, 5.0)), col, 1, randf_range(1.4, 2.4), 0.7)
+		elif k % 3 == 0:
+			_debris(pos, v, vz, Vector2(randf_range(4.0, 8.0), randf_range(3.0, 5.0)), col, 1, randf_range(1.2, 2.0), 0.7)
+		else:
+			_debris(pos, v, vz, Vector2(randf_range(10.0, 18.0), randf_range(4.0, 6.0)), col, 0, randf_range(1.8, 3.0))
+	dust(pos, 3, Color(0.75, 0.65, 0.5, 0.5), 12.0)
+	sparks(pos, dir, Color(0.95, 0.8, 0.5), 4)
+
+
+## Pancada em objeto que ainda não quebrou: lascas voltam para o jogador.
+func object_chips(pos: Vector2, otype: String, dir: Vector2) -> void:
+	var cols: Array = _obj_colors(otype)
+	for k in 3:
+		var v: Vector2 = -dir.rotated(randf_range(-0.8, 0.8)) * randf_range(60.0, 180.0)
+		var col: Color = cols[randi() % cols.size()]
+		_debris(pos, v, randf_range(120.0, 240.0), Vector2(randf_range(3.0, 6.0), randf_range(2.5, 4.0)), col, 1, randf_range(0.6, 1.1), 0.5)
 	dust(pos, 1, Color(0.75, 0.65, 0.5, 0.4), 8.0)
 
 
